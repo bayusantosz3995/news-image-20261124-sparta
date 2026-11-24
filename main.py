@@ -3,9 +3,10 @@
 
 Renders a chronological timeline — "THE DAY IN SIX MOMENTS" — of the
 six biggest world stories of Tuesday 24 November 2026, each with a time
-stamp, a headline and a one-line summary, on a dark background with a
-bright amber timeline. All six stories are real events reported on
-24 November 2026 (Reuters / BBC / AP headlines of the day):
+stamp, a headline with a short amber underline, and a one-line summary,
+on a dark background with a bright amber timeline. All six stories are
+real events reported on 24 November 2026 (Reuters / BBC / AP headlines
+of the day):
 
   05:52 WIB  South Korea evacuation warning after a Russian aircraft
              enters its airspace (alert lifted after 3 minutes).
@@ -119,13 +120,16 @@ def render(path):
         r = 11
         d.ellipse([spine_x - r, cy - 34 - r, spine_x + r, cy - 34 + r],
                   fill=AMBER, outline=BG, width=3)
-        # Headline + summary.
+        # Headline + amber underline, then summary. The underline
+        # (64 px) marks each event visually and keeps the headline
+        # distinct from the summary below it.
         d.text((text_x, cy - 52), head, font=f_head, fill=WHITE)
+        d.rectangle([text_x, cy - 16, text_x + 64, cy - 12], fill=AMBER)
         lines = wrap(d, summary, f_sum, text_w)
-        y = cy - 14
+        y = cy - 2
         for ln in lines[:2]:
             d.text((text_x, y), ln, font=f_sum, fill=MUTED)
-            y += 27
+            y += 28
         # Row separator (except after the last row).
         if i < len(EVENTS) - 1:
             d.line([(text_x, top + row_h * (i + 1) - 8),
